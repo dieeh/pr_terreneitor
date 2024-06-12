@@ -1,0 +1,14 @@
+{
+    "name": "terreneitor",
+    "stubs": {
+        "micropython-esp8266-stubs": "1.19.1.post12"
+    },
+    "dev-packages": {
+        "micropy-cli": "*"
+    },
+    "packages": {},
+    "config": {
+        "vscode": true,
+        "pylint": true
+    }
+}
