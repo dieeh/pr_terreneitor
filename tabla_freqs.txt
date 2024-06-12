@@ -1,0 +1,39 @@
+MOTOR
+
+DEFAULT PWM FREQ = 500HZ
+
+5V -> 1000HZ -> 670 DUTY START // 800 CORRE
+
+///
+
+##################
+
+Setting freq may affect other PWM objects if the objects share the same underlying PWM generator (this is hardware specific). Only one of duty_u16 and duty_ns should be specified at a time. invert is not available at all ports.
+
+##################
+
+PWM.duty_u16([value])
+Get or set the current duty cycle of the PWM output, as an unsigned 16-bit value in the range 0 to 65535 inclusive.
+
+With no arguments the duty cycle is returned.
+
+With a single value argument the duty cycle is set to that value, measured as the ratio value / 65535.
+
+##################
+
+PWM.duty_ns([value])
+Get or set the current pulse width of the PWM output, as a value in nanoseconds.
+
+With no arguments the pulse width in nanoseconds is returned.
+
+With a single value argument the pulse width is set to that value.
+
+##################
+
+Some motor controllers will accept an analog value in the form of 0-10 volts or 4-20 mA which will be scaled to output a duty cycle ranging from 0-100%. Microcontrollers like the Arduino use their digital outputs to provide PWM signals, simply writing an output command with an argument between 0 and 255 which represents the full duty cycle range.
+
+Most motors still run smoothly with low PWM frequencies. With low PWM frequencies, you will have less switching losses if you use cheaper motor drivers (e.g. L293D). However, if the switching frequency is in the audible range, e.g. 500..5000Hz, most motors will produce an audible sound which can be quite irritating in some circumstances.
+
+When using very high PWM frequencies, you will typically have less torque with low PWM values. This is caused by the self-induction of the motor. The current in an inductor linearly increases when a constant voltage is applied. If the switching frequency of your PWM is faster than the rise-time of the current, you will reduce the maximum instantaneous current in the motor, and this can have the effect of reduced torque.
+
+https://micropython.org/download/ESP8266_GENERIC/

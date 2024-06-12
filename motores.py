@@ -20,7 +20,6 @@ class Motor:
             self.pwm_f = PWM(pin_forward, freq=freq)
             self.pwm_b = PWM(pin_backward, freq=freq)
 
-    @classmethod
     def accelerate(freq, duty):
         if self.type_pow == "lin":
             return self.pin_forward.on()
@@ -29,7 +28,6 @@ class Motor:
             sleep(0.15)
             return
 
-    @classmethod
     def reverse():
         if self.type_pow == "lin":
             return self.pin_backward.on()
@@ -48,7 +46,6 @@ class Servo:
         self.max = max
         self.motor = PWM(self.pin, freq=freq)
 
-    @classmethod
     def movement(angle):
         if (angle >= min) and (angle <= max):
             motor.duty(angle)
