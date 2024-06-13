@@ -27,27 +27,29 @@ from time import sleep
 
 
 pin_1 = Pin(5, Pin.OUT)
-pin_2 = Pin(4, Pin.OUT)
+pin_2 = Pin(2, Pin.OUT)
 #
 # for i in range(50):
 #  pin_1.on()
 #  sleep(0.1)
 
-pin_motor = PWM(pin_1)
-print(pin_motor.freq())
+pin_motor1 = PWM(pin_1)
+pin_motor2 = PWM(pin_2)
+print(pin_motor1.freq())
+print(pin_motor2.freq())
 
-pin_motor.freq(300)
 # for i in range(1200, 950, 5):
 #    pin_motor.duty(i)
 #    sleep(0.5)
 #    print(i)
 
 
-per = 95
+per = 70
 k = round((65535 * per) / 100)
 
 for i in range(15):
-    pin_motor.duty_u16(k)
+    pin_motor1.duty_u16(k)
+    pin_motor2.duty_u16(k)
     sleep(0.2)
 
 # for i in range(1, 30):

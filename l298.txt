@@ -1,0 +1,1 @@
+IN1 y IN2 son para los motores de la derecha (mirando desde el disipador)
