@@ -2,39 +2,37 @@ from machine import Pin, PWM
 from time import sleep
 
 
+def p_to_duty(percentage):
+    return round((1023 * percentage) / 100)
+
+
 class Motor:
-    pwm_f = None
-    pwm_b = None
-    type_pow = ""
 
-    def __init__(self, pin_1: Pin, pin_2: Pin, pow: str, freq=1000, duty=400):
-        self.pin_forward = pin_1
-        self.pin_backward = pin_2
+    def __init__(self, pin_pwm, pin_forward, pin_backward, freq=500, duty_per=100):
+        self.pin_pwm = pin_pwm
+        self.pin_forward = pin_forward
+        self.pin_backward = pin_backward
         self.freq = freq
-        self.duty = duty
-        if pow == "lin" or pow == "pwm":
-            self.type_pow = pow
-        else:
-            self.type_pow == "lin"
-        if self.type_pow == "pwm":
-            self.pwm_f = PWM(pin_forward, freq=freq)
-            self.pwm_b = PWM(pin_backward, freq=freq)
+        self.duty_per = duty_per
+        self.pwm = PWM(self.pin_pwm, freq=self.freq)
 
-    def accelerate(freq, duty):
-        if self.type_pow == "lin":
-            return self.pin_forward.on()
-        else:
-            self.pwm_f.duty(duty)
-            sleep(0.15)
-            return
+    @staticmethod
+    def accelerate(duty=self.duty_per):
+        self.pin_forward.on()
+        self.pin_backward.off()
+        self.pwm(p_to_duty(duty))
 
-    def reverse():
-        if self.type_pow == "lin":
-            return self.pin_backward.on()
-        else:
-            self.pwm_b.duty(duty)
-            sleep(0.15)
-            return
+    @staticmethod
+    def reverse(duty=self.duty_per):
+        self.pin_forward.off()
+        self.pin_backward.on()
+        self.pwm(p_to_duty(duty))
+
+    @staticmethod
+    def stop():
+        self.pin_forward.off()
+        self.pin_backward.off()
+        self.pwm(0)
 
 
 class Servo:
