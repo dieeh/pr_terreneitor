@@ -40,7 +40,7 @@ class DCMotor:
 
 class ServoMotor:
 
-    def __init__(self, pin_pwm, freq=40, min=15, max=135):  # -> Any:
+    def __init__(self, pin_pwm, freq=40, min=0, max=180):  # -> Any:
         self.pin_pwm = pin_pwm
         self.freq = freq
         self.min = min
@@ -49,7 +49,12 @@ class ServoMotor:
 
     def movement(self, angle):  # -> Any:
         if (angle >= self.min) and (angle <= self.max):
-            self.motor.duty(angle)
+            duty = 12.346 * angle**2 + 7777.8 * angle + 700000
+            # milisegundos
+            duty /= 1000000
+            # bits
+            duty = int(duty * 1023 / 20)
+            self.motor.duty(duty)
             sleep(0.2)
 
 
