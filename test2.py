@@ -13,21 +13,21 @@ k = PWM(x, freq=50)  ##RANGO DUTY 17 - 134
 # k.duty(122)
 # sleep(1)
 
-for angulo in range(181):
-    print(angulo)
+# for angulo in range(181):
+#    print(angulo)
 
-    # angulo = 90
-    if angulo >= 0 and angulo <= 180:
-        # nanosegundos
-        duty = 12.346 * angulo**2 + 7777.8 * angulo + 700000
-        # milisegundos
-        duty /= 1000000
-        # bits
-        duty = int(duty * 1023 / 20)
-        k.duty(duty)
-    else:
-        print("Digite un ángulo entre 0 y 180")
-    sleep(0.5)
+angulo = 90
+if angulo >= 0 and angulo <= 180:
+    # nanosegundos
+    duty = 12.346 * angulo**2 + 7777.8 * angulo + 700000
+    # milisegundos
+    duty /= 1000000
+    # bits
+    duty = int(duty * 1023 / 20)
+    k.duty(duty)
+else:
+    print("Digite un ángulo entre 0 y 180")
+sleep(0.5)
 
 # for i in range(17, 135):
 #    k.duty(i)
