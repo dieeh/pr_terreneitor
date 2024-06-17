@@ -1,7 +1,7 @@
 from machine import Pin, PWM
 from time import sleep
 from motores import p_to_duty
-from SN74HC595N import ShiftRegister
+from Register import ShiftRegister
 
 #
 # k = PWM(Pin(14, Pin.OUT), freq=1000)
