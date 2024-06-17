@@ -1,5 +1,7 @@
 from machine import Pin
 
+# from https://github.com/a-elmohamady/micropython-ESP-74HC595
+
 
 class ShiftRegister:
 

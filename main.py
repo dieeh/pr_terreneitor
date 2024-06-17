@@ -1,57 +1,34 @@
 from machine import Pin, PWM, ADC
 from time import sleep
+from motor import DCMotor, ServoMotor
+from register import ShiftRegister
 
-# Sensor ::: valores: blanco = 1, negro = 0
-# Nota el sensor necesita mucho contraste
+### pin assignments
 
+# ESP8266 IO PINS
+# D0 -> GPIO16  -> Sensor -> INPUT
+# D1 -> GPIO5   -> Register -> OUTPUT
+# D2 -> GPIO4   -> Register -> OUTPUT
+# D3 -> GPIO0   -> Sensor -> INPUT
+# D4 -> GPIO2   -> Sensor -> INPUT
+# D5 -> GPIO14  -> Register -> OUTPUT
+# D6 -> GPIO12  -> Sensor -> INPUT
+# D7 -> GPIO13  -> Sensor -> INPUT
+# D8 -> GPIO15  -> ServoMotor -> PWM OUTPUT
 
-# sensor = PWM(Pin(5, Pin.OUT), freq=50)
-### 15 <= duty <= 135  -> freq = 50
-#
-# for j in range(2):
-#
-#   # for i in range(10, 110):
-#    #    sensor.duty(i)
-#     #   sleep(0.3)
-#      #  print(i)
-#
-#    for h in range(15, 113):
-#       sensor.duty(h)
-#       sleep(0.01)
-#       print(h)
-#
-#
-##sensor.duty(15)
-# sleep(5)
-# sensor.duty(135)
+# SN74HC595 REGISTER OUTPUT PINS
+# Qa -> I0 -> DCMotor1_Forward
+# Qb -> I1 -> DCMotor1_Backward
+# Qc -> I2 -> DCMotor2_Forward
+# Qd -> I3 -> DCMotor2_Backward
+# Qe -> I4 -> DCMotor3_Forward
+# Qf -> I5 -> DCMotor3_Backward
+# Qg -> I6 -> DCMotor4_Forward
+# Qh -> I7 -> DCMotor4_Backward
 
-
-pin_1 = Pin(5, Pin.OUT)
-pin_2 = Pin(2, Pin.OUT)
-#
-# for i in range(50):
-#  pin_1.on()
-#  sleep(0.1)
-
-pin_motor1 = PWM(pin_1)
-pin_motor2 = PWM(pin_2)
-print(pin_motor1.freq())
-print(pin_motor2.freq())
-
-# for i in range(1200, 950, 5):
-#    pin_motor.duty(i)
-#    sleep(0.5)
-#    print(i)
-
-
-per = 70
-k = round((65535 * per) / 100)
-
-for i in range(15):
-    pin_motor1.duty_u16(k)
-    pin_motor2.duty_u16(k)
-    sleep(0.2)
-
-# for i in range(1, 30):
-#   pin_motor.duty(400)
-#   sleep(0.2)
+MotorPins = ShiftRegister(5, 4, 14)
+Motor1 = DCMotor(MotorPins, 0, 1)
+Motor2 = DCMotor(MotorPins, 2, 3)
+Motor3 = DCMotor(MotorPins, 4, 5)
+Motor4 = DCMotor(MotorPins, 6, 7)
+Servo = ServoMotor(15)
