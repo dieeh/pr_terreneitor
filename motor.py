@@ -45,7 +45,7 @@ class DCMotor:
 class ServoMotor:
 
     def __init__(self, pin_pwm, freq=50, min=0, max=180):  # -> Any:
-        self.pin_pwm = pin_pwm
+        self.pin_pwm = Pin(pin_pwm, Pin.OUT)
         self.freq = freq
         self.min = min
         self.max = max
