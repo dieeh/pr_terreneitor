@@ -53,7 +53,7 @@ class ServoMotor:
 
     def movement(self, angle):  # -> Any:
         if (angle >= self.min) and (angle <= self.max):
-            duty = (12.346 * angle**2) + (7777.8 * angle) + 700000  # milisegundos
+            duty = (12.346 * round(angle)**2) + (7777.8 * round(angle)) + 700000  # milisegundos
             duty /= 1000000  # bits
             duty = int(duty * 1023 / 20)
             self.motor.duty(duty)
