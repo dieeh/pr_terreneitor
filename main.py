@@ -7,7 +7,6 @@ freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 
 ### pin assignments
 
-
 # ESP8266 IO PINS
 # D0 -> GPIO16  -> Sensor -> INPUT
 # D1 -> GPIO5   -> Sensor -> INPUT
@@ -29,10 +28,8 @@ freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 # Qg -> I6 -> DCMotor4_Forward
 # Qh -> I7 -> DCMotor4_Backward
 
-MotorPins = ShiftRegister(14, 12, 13)
-
-#Init Register
-MotorPins.setOutputs([0,0,0,0,0,0,0,0])
+MotorPins = ShiftRegister(14, 12, 13)  ## Init Register
+MotorPins.setOutputs([0,0,0,0,0,0,0,0])  
 MotorPins.latch()
 
 Motor1 = DCMotor(MotorPins, 0, 1)  ## Arrangement of motors
@@ -75,79 +72,6 @@ SensorIn_2 = Pin(5, Pin.IN, value=0)  ## Arrangement of sensors
 SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
 SensorIn_4 = Pin(0, Pin.IN, value=0)  ## 1,2,3,4,5
 SensorIn_5 = Pin(2, Pin.IN, value=0)  ## values: 0 for black, 1 for white
-
-# region  
-## Sersor info
-# (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 1)
-
-# [0,0,0,0,0] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 0) quiet
-# [0,0,0,0,1] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 1) quiet
-# [0,0,0,1,0] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 0) left
-# [0,0,0,1,1] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 1) left
-# [0,0,1,0,0] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 0) quiet
-# [0,0,1,0,1] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 1) quiet
-# [0,0,1,1,0] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 0) left
-# [0,0,1,1,1] (SensorIn_1 == 0) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 1) left
-# [0,1,0,0,0] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 0) right
-# [0,1,0,0,1] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 1) right
-# [0,1,0,1,0] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 0) forward
-# [0,1,0,1,1] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 1) forward
-# [0,1,1,0,0] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 0) right
-# [0,1,1,0,1] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 1) right
-# [0,1,1,1,0] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 0) forward
-# [0,1,1,1,1] (SensorIn_1 == 0) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 1) left
-# [1,0,0,0,0] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 0) forward
-# [1,0,0,0,1] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 1) forward
-# [1,0,0,1,0] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 0) left
-# [1,0,0,1,1] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 1) left
-# [1,0,1,0,0] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 0) forward
-# [1,0,1,0,1] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 1) forward
-# [1,0,1,1,0] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 0) left
-# [1,0,1,1,1] (SensorIn_1 == 1) and (SensorIn_2 == 0) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 1) left
-# [1,1,0,0,0] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 0) right
-# [1,1,0,0,1] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 0) and (SensorIn_5 == 1) right
-# [1,1,0,1,0] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 0) forward
-# [1,1,0,1,1] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 0) and (SensorIn_4 == 1) and (SensorIn_5 == 1) forward
-# [1,1,1,0,0] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 0) right
-# [1,1,1,0,1] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 0) and (SensorIn_5 == 1) right
-# [1,1,1,1,0] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 0) right
-# [1,1,1,1,1] (SensorIn_1 == 1) and (SensorIn_2 == 1) and (SensorIn_3 == 1) and (SensorIn_4 == 1) and (SensorIn_5 == 1) quiet
-#endregion
-
-#region
-# [0,1,0,1,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) forward
-# [0,1,0,1,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) forward
-# [0,1,1,1,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) forward
-# [1,0,0,0,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) forward
-# [1,0,0,0,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) forward
-# [1,0,1,0,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) forward
-# [1,0,1,0,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) forward
-# [1,1,0,1,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) forward
-# [1,1,0,1,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) forward
-# [0,1,0,0,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) right
-# [0,1,0,0,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) right
-# [0,1,1,0,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) right
-# [0,1,1,0,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) right
-# [1,1,0,0,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) right
-# [1,1,0,0,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) right
-# [1,1,1,0,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) right
-# [1,1,1,0,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) right
-# [1,1,1,1,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) right
-# [0,0,0,1,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) left
-# [0,0,0,1,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) left
-# [0,0,1,1,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) left
-# [0,0,1,1,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) left
-# [0,1,1,1,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) left
-# [1,0,0,1,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) left
-# [1,0,0,1,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) left
-# [1,0,1,1,0] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) left
-# [1,0,1,1,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) left
-# [0,0,0,0,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) backwards
-# [0,0,0,0,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) backwards
-# [0,0,1,0,0] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) backwards
-# [0,0,1,0,1] ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) backwards
-# [1,1,1,1,1] ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) backwards
-#endregion
 
 flag = True
 while flag:
