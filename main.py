@@ -70,11 +70,11 @@ def center():
     Servo.movement(90)
 
 
-SensorIn_1 = Pin(16, Pin.IN)
-SensorIn_2 = Pin(5, Pin.IN)  ## Arrangement of sensors
-SensorIn_3 = Pin(4, Pin.IN)  ## -- front --
-SensorIn_4 = Pin(0, Pin.IN)  ## 1,2,3,4,5
-SensorIn_5 = Pin(2, Pin.IN)  ## values: 0 for black, 1 for white
+SensorIn_1 = Pin(16, Pin.IN, value=0)
+SensorIn_2 = Pin(5, Pin.IN, value=0)  ## Arrangement of sensors
+SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
+SensorIn_4 = Pin(0, Pin.IN, value=0)  ## 1,2,3,4,5
+SensorIn_5 = Pin(2, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 
 # region  
 ## Sersor info
@@ -151,7 +151,7 @@ SensorIn_5 = Pin(2, Pin.IN)  ## values: 0 for black, 1 for white
 
 flag = True
 while flag:
-    while (
+    if (
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
@@ -162,9 +162,12 @@ while flag:
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))
     ):
-        print('1')
+        Motor1.accelerate()
+        Motor2.accelerate()
+        Motor3.accelerate()
+        Motor4.accelerate()
 
-    while (
+    if (
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
@@ -175,9 +178,16 @@ while flag:
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0))
     ):
-        print('2'):
+        turn_right()
+        sleep(0.2)
+        Motor1.accelerate()
+        Motor2.stop()
+        Motor3.accelerate()
+        Motor4.accelerate()
+    else:
+        center()
 
-    while (
+    if (
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
@@ -188,25 +198,45 @@ while flag:
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))
     ):
-        print('3')
+        turn_left()
+        sleep(0.2)
+        Motor1.stop()
+        Motor2.accelerate()
+        Motor3.accelerate()
+        Motor4.accelerate()
+    else:
+        center()
 
-    while (
+    if (
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1))
-    ):
-        print('4')
+    ):  
+        center()
+        sleep(0.2)
+        Motor1.reverse()
+        Motor2.reverse()
+        Motor3.reverse()
+        Motor4.reverse()
 
     startTime = ticks_ms()
     while(((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))):
-        if (ticks_diff(ticks_ms(), startTime)/1000 > 5):    
-            print("Longer than 5 seconds")
+        if (ticks_diff(ticks_ms(), startTime)/1000 > 5):
+            Motor1.stop()
+            Motor2.stop()
+            Motor3.stop()
+            Motor4.stop()    
+            turn_left()
+            turn_right()
+            turn_left()
+            turn_right()
             flag = False
             break
 
 
 #Exit protocol
 freq(80000000)
+center()
 MotorPins.setOutputs([0,0,0,0,0,0,0,0])
 MotorPins.latch()
