@@ -66,3 +66,25 @@ sleep(0.5)
 #    sleep(3)
 # x.off()
 # y.off()
+def girar(angulo, serv):
+    if angulo >= 0 and angulo <= 180:
+        # nanosegundos
+        duty = 12.346 * angulo**2 + 7777.8 * angulo + 700000
+        # milisegundos
+        duty /= 1000000
+        # bits
+        duty = int(duty * 1023 / 20)
+        serv.duty(duty)
+    else:
+        print("Digite un ángulo entre 0 y 180")
+    sleep(0.5)
+
+for i in range(5):
+    girar(35, k)
+    sleep(1)
+    girar(90, k)
+    sleep(1)
+    girar(145, k)
+    sleep(1)
+    girar(90, k)
+    sleep(1)
