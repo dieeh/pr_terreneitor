@@ -73,8 +73,10 @@ SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
 SensorIn_4 = Pin(0, Pin.IN, value=0)  ## 1,2,3,4,5
 SensorIn_5 = Pin(2, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 
+debug_list = []
 flag = True
 while flag:
+    debug_timer1 = ticks_ms()
     S1, S2, S3, S4, S5 = SensorIn_1.value(), SensorIn_2.value(), SensorIn_3.value(), SensorIn_4.value(), SensorIn_5.value()
     if (
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 0)) or 
@@ -144,7 +146,8 @@ while flag:
         Motor2.reverse()
         Motor3.reverse()
         Motor4.reverse()
-
+    debug_time = ticks_diff(ticks_ms(), debug_timer1)
+    debug_list.append(debug_time)
     startTime = ticks_ms()
     while(((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))):
         if (ticks_diff(ticks_ms(), startTime)/1000 > 5):
@@ -165,3 +168,4 @@ freq(80000000)
 center()
 MotorPins.setOutputs([0,0,0,0,0,0,0,0])
 MotorPins.latch()
+print(debug_list)
