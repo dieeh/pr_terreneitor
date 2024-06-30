@@ -141,6 +141,7 @@ while flag:
     ):  
         center()
         sleep(0.2)
+        print(a)
         Motor1.reverse()
         Motor2.reverse()
         Motor3.reverse()

@@ -11,18 +11,18 @@ class DCMotor:
         self.shift_register = shift_register
 
     def accelerate(self):  # -> Any:
-        self.shift_register.setOutput(pin_forward, True)
-        self.shift_register.setOutput(pin_backward, False)
+        self.shift_register.setOutput(self.pin_forward, True)
+        self.shift_register.setOutput(self.pin_backward, False)
         self.shift_register.latch()
 
     def reverse(self):  # -> Any:
-        self.shift_register.setOutput(pin_forward, False)
-        self.shift_register.setOutput(pin_backward, True)
+        self.shift_register.setOutput(self.pin_forward, False)
+        self.shift_register.setOutput(self.pin_backward, True)
         self.shift_register.latch()
 
     def stop(self):  # -> Any:
-        self.shift_register.setOutput(pin_forward, False)
-        self.shift_register.setOutput(pin_backward, False)
+        self.shift_register.setOutput(self.pin_forward, False)
+        self.shift_register.setOutput(self.pin_backward, False)
         self.shift_register.latch()
 
 

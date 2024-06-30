@@ -4,7 +4,7 @@ from motor import DCMotor, ServoMotor
 from register import ShiftRegister
 
 freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
-
+print('1')
 ### pin assignments
 
 # ESP8266 IO PINS
@@ -38,7 +38,7 @@ Motor3 = DCMotor(MotorPins, 4, 5)  ## M1 - M2
 Motor4 = DCMotor(MotorPins, 6, 7)  ## M3 - M4
 Servo = ServoMotor(15)
 
-
+print('2')
 def turn_right(inv=False):
     if inv:
         Servo.movement(45)
@@ -72,12 +72,13 @@ SensorIn_2 = Pin(5, Pin.IN, value=0)  ## Arrangement of sensors
 SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
 SensorIn_4 = Pin(0, Pin.IN, value=0)  ## 1,2,3,4,5
 SensorIn_5 = Pin(2, Pin.IN, value=0)  ## values: 0 for black, 1 for white
-
+print('3')
 debug_list = []
 flag = True
 while flag:
     debug_timer1 = ticks_ms()
     S1, S2, S3, S4, S5 = SensorIn_1.value(), SensorIn_2.value(), SensorIn_3.value(), SensorIn_4.value(), SensorIn_5.value()
+    print(S1, S2, S3, S4, S5)
     if (
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 1)) or 
@@ -142,6 +143,7 @@ while flag:
     ):  
         center()
         sleep(0.2)
+        print('a')
         Motor1.reverse()
         Motor2.reverse()
         Motor3.reverse()
