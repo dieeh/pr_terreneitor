@@ -11,10 +11,10 @@ freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 # D0 -> GPIO16  -> Sensor -> INPUT
 # D1 -> GPIO5   -> Sensor -> INPUT
 # D2 -> GPIO4   -> Sensor -> INPUT
-# D3 -> GPIO0   -> Sensor -> INPUT
-# D4 -> GPIO2   -> Sensor -> INPUT
-# D5 -> GPIO14  -> Register -> OUTPUT
-# D6 -> GPIO12  -> Register -> OUTPUT
+# D3 -> GPIO0   -> Register -> OUTPUT
+# D4 -> GPIO2   -> Register -> OUTPUT
+# D5 -> GPIO14  -> Sensor -> INPUT
+# D6 -> GPIO12  -> Sensor -> INPUT
 # D7 -> GPIO13  -> Register -> OUTPUT
 # D8 -> GPIO15  -> ServoMotor -> PWM OUTPUT
 
