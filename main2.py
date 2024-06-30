@@ -3,18 +3,18 @@ from time import sleep, ticks_ms, ticks_diff
 from motor import DCMotor, ServoMotor
 from register import ShiftRegister
 
-freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 print('1')
+freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 ### pin assignments
 
 # ESP8266 IO PINS
 # D0 -> GPIO16  -> Sensor -> INPUT
 # D1 -> GPIO5   -> Sensor -> INPUT
 # D2 -> GPIO4   -> Sensor -> INPUT
-# D3 -> GPIO0   -> Sensor -> INPUT
-# D4 -> GPIO2   -> Sensor -> INPUT
-# D5 -> GPIO14  -> Register -> OUTPUT
-# D6 -> GPIO12  -> Register -> OUTPUT
+# D3 -> GPIO0   -> Register -> OUTPUT
+# D4 -> GPIO2   -> Register -> OUTPUT
+# D5 -> GPIO14  -> Sensor -> INPUT
+# D6 -> GPIO12  -> Sensor -> INPUT
 # D7 -> GPIO13  -> Register -> OUTPUT
 # D8 -> GPIO15  -> ServoMotor -> PWM OUTPUT
 
@@ -28,7 +28,7 @@ print('1')
 # Qg -> I6 -> DCMotor4_Forward
 # Qh -> I7 -> DCMotor4_Backward
 
-MotorPins = ShiftRegister(14, 12, 13)  ## Init Register
+MotorPins = ShiftRegister(0, 2, 13)  ## Init Register
 MotorPins.setOutputs([0,0,0,0,0,0,0,0])  
 MotorPins.latch()
 
@@ -70,8 +70,8 @@ def center():
 SensorIn_1 = Pin(16, Pin.IN, value=0)
 SensorIn_2 = Pin(5, Pin.IN, value=0)  ## Arrangement of sensors
 SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
-SensorIn_4 = Pin(0, Pin.IN, value=0)  ## 1,2,3,4,5
-SensorIn_5 = Pin(2, Pin.IN, value=0)  ## values: 0 for black, 1 for white
+SensorIn_4 = Pin(14, Pin.IN, value=0)  ## 1,2,3,4,5
+SensorIn_5 = Pin(12, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 print('3')
 debug_list = []
 flag = True
@@ -149,10 +149,10 @@ while flag:
         Motor3.reverse()
         Motor4.reverse()
     debug_time = ticks_diff(ticks_ms(), debug_timer1)
-    debug_list.append(debug_time)
+    debug_list.append((debug_time/1000))
     startTime = ticks_ms()
     while(((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))):
-        if (ticks_diff(ticks_ms(), startTime)/1000 > 5):
+        if (ticks_diff(ticks_ms(), startTime)/1000 > 3):
             Motor1.stop()
             Motor2.stop()
             Motor3.stop()

@@ -6,7 +6,7 @@ def p_to_duty(percentage: int):  # -> Any:
     return round((1023 * percentage) / 100)
 
 
-x = Pin(5, Pin.OUT)
+x = Pin(15, Pin.OUT)
 
 k = PWM(x, freq=50)  ##RANGO DUTY 17 - 134
 

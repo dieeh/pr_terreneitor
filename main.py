@@ -28,7 +28,7 @@ freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 # Qg -> I6 -> DCMotor4_Forward
 # Qh -> I7 -> DCMotor4_Backward
 
-MotorPins = ShiftRegister(14, 12, 13)  ## Init Register
+MotorPins = ShiftRegister(0, 2, 13)  ## Init Register
 MotorPins.setOutputs([0,0,0,0,0,0,0,0])  
 MotorPins.latch()
 
@@ -70,8 +70,8 @@ def center():
 SensorIn_1 = Pin(16, Pin.IN, value=0)
 SensorIn_2 = Pin(5, Pin.IN, value=0)  ## Arrangement of sensors
 SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
-SensorIn_4 = Pin(0, Pin.IN, value=0)  ## 1,2,3,4,5
-SensorIn_5 = Pin(2, Pin.IN, value=0)  ## values: 0 for black, 1 for white
+SensorIn_4 = Pin(14, Pin.IN, value=0)  ## 1,2,3,4,5
+SensorIn_5 = Pin(12, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 
 debug_list = []
 flag = True
@@ -141,17 +141,17 @@ while flag:
     ):  
         center()
         sleep(0.2)
-        print(a)
+        print("a")
         Motor1.reverse()
         Motor2.reverse()
         Motor3.reverse()
         Motor4.reverse()
 
     debug_time = ticks_diff(ticks_ms(), debug_timer1)
-    debug_list.append(debug_time)
+    debug_list.append((debug_time/1000))
     startTime = ticks_ms()
     while(((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))):
-        if (ticks_diff(ticks_ms(), startTime)/1000 > 5):
+        if (ticks_diff(ticks_ms(), startTime)/1000 > 3):
             Motor1.stop()
             Motor2.stop()
             Motor3.stop()
