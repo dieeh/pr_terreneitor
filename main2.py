@@ -79,6 +79,7 @@ while flag:
     debug_timer1 = ticks_ms()
     S1, S2, S3, S4, S5 = SensorIn_1.value(), SensorIn_2.value(), SensorIn_3.value(), SensorIn_4.value(), SensorIn_5.value()
     print(S1, S2, S3, S4, S5)
+    MotorPins.debug()
     if (
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 1)) or 

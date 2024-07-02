@@ -55,3 +55,7 @@ class ShiftRegister:
             self.clock_pin.value(1)
 
         self.latch_pin.value(1)
+
+
+    def debug(self):
+        print(self.outputs)
