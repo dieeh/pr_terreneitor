@@ -1,7 +1,7 @@
 from machine import Pin, PWM
 from time import sleep
-from motores import p_to_duty
-from Register import ShiftRegister
+
+from register import ShiftRegister
 
 #
 # k = PWM(Pin(14, Pin.OUT), freq=1000)
@@ -59,7 +59,7 @@ from Register import ShiftRegister
 #    sleep(2)
 
 
-a = ShiftRegister(5, 4, 14, 1)
+a = ShiftRegister(0, 2, 13, 1)
 flag = True
 
 alltrue = [1, 1, 1, 1, 1, 1, 1, 1]
@@ -87,7 +87,7 @@ sleep(2)
 for k in range(8):
     a.setOutput(k, False)
     a.latch()
-    print(f"{j}, off")
+    print(f"{k}, off")
     sleep(1)
 
 # for i in range(3):

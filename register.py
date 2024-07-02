@@ -13,9 +13,9 @@ class ShiftRegister:
 
     def __init__(self, data_pin, latch_pin, clock_pin, units=1):
 
-        self.data_pin = Pin(data_pin, Pin.OUT)
-        self.latch_pin = Pin(latch_pin, Pin.OUT)
-        self.clock_pin = Pin(clock_pin, Pin.OUT)
+        self.data_pin = Pin(data_pin, Pin.OUT, value=0)
+        self.latch_pin = Pin(latch_pin, Pin.OUT, value=0)
+        self.clock_pin = Pin(clock_pin, Pin.OUT, value=0)
         self.units = units
 
         self.outputs = [0] * 8 * units
@@ -43,18 +43,18 @@ class ShiftRegister:
         self.outputs = outputs
 
     def latch(self):
-        self.latch_pin.value(0)
         if self.units == 1:
             n = 0
         else:
             n = 1
 
         for i in range((7 * self.units) + n, -1, -1):
-            self.clock_pin.value(0)
             self.data_pin.value(self.outputs[i])
             self.clock_pin.value(1)
+            self.clock_pin.value(0)
 
         self.latch_pin.value(1)
+        self.latch_pin.value(0)
 
 
     def debug(self):

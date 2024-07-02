@@ -74,10 +74,12 @@ SensorIn_4 = Pin(14, Pin.IN, value=0)  ## 1,2,3,4,5
 SensorIn_5 = Pin(12, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 print('3')
 debug_list = []
-flag = True
+flag_main = True
 flag_acc = False
 flag_rev = False
-while flag:
+flag_right = False
+flag_left = False
+while flag_main:
     debug_timer1 = ticks_ms()
     S1, S2, S3, S4, S5 = SensorIn_1.value(), SensorIn_2.value(), SensorIn_3.value(), SensorIn_4.value(), SensorIn_5.value()
     print(S1, S2, S3, S4, S5)
@@ -113,14 +115,14 @@ while flag:
         ((S1 == 1) and (S2 == 1) and (S3 == 1) and (S4 == 1) and (S5 == 0))
     ):
         turn_right()
-        if flag_acc == False:
-            sleep(0.2)
-            Motor1.accelerate()
-            Motor2.stop()
-            Motor3.accelerate()
-            Motor4.accelerate()
-            flag_acc = True
-            flag_rev = False
+        sleep(0.2)
+        #if flag_right == False:
+        #    Motor1.accelerate()
+        #    Motor2.stop()
+        #    Motor3.accelerate()
+        #    Motor4.accelerate()
+        #    flag_right = True
+        #    flag_left = False
     #else:
     #    center()
 
@@ -137,13 +139,13 @@ while flag:
     ):
         turn_left()
         sleep(0.2)
-        Motor1.stop()
-        if flag_acc == False:
-            Motor2.accelerate()
-            Motor3.accelerate()
-            Motor4.accelerate()
-            flag_acc = True
-            flag_rev = False
+       # if flag_left == False:
+       #     Motor1.stop()
+       #     Motor2.accelerate()
+       #     Motor3.accelerate()
+       #     Motor4.accelerate()
+       #     flag_left = True
+       #     flag_right = False
     #else:
     #    center()
 
@@ -153,11 +155,11 @@ while flag:
         ((S1 == 0) and (S2 == 0) and (S3 == 1) and (S4 == 0) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 0) and (S3 == 1) and (S4 == 0) and (S5 == 1))
     ):  
+        center()
+        sleep(0.2)
         if flag_rev == False:
-            MotorPins.debug()
-            center()
-            sleep(0.2)
             print('a')
+            MotorPins.debug()
             Motor1.reverse()
             Motor2.reverse()
             Motor3.reverse()
@@ -179,7 +181,7 @@ while flag:
             turn_right()
             turn_left()
             turn_right()
-            flag = False
+            flag_main = False
             break
 
 
