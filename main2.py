@@ -75,6 +75,8 @@ SensorIn_5 = Pin(12, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 print('3')
 debug_list = []
 flag = True
+flag_acc = False
+flag_rev = False
 while flag:
     debug_timer1 = ticks_ms()
     S1, S2, S3, S4, S5 = SensorIn_1.value(), SensorIn_2.value(), SensorIn_3.value(), SensorIn_4.value(), SensorIn_5.value()
@@ -91,12 +93,15 @@ while flag:
         ((S1 == 1) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 0)) or 
         ((S1 == 1) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 1))
     ):
-        Motor1.accelerate()
-        Motor2.accelerate()
-        Motor3.accelerate()
-        Motor4.accelerate()
-
-    if (
+        if flag_acc == False:
+            MotorPins.debug()
+            Motor1.accelerate()
+            Motor2.accelerate()
+            Motor3.accelerate()
+            Motor4.accelerate()
+            flag_acc = True
+            flag_rev = False
+    elif (
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 0) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 0) and (S5 == 1)) or 
         ((S1 == 0) and (S2 == 1) and (S3 == 1) and (S4 == 0) and (S5 == 0)) or 
@@ -108,15 +113,18 @@ while flag:
         ((S1 == 1) and (S2 == 1) and (S3 == 1) and (S4 == 1) and (S5 == 0))
     ):
         turn_right()
-        sleep(0.2)
-        Motor1.accelerate()
-        Motor2.stop()
-        Motor3.accelerate()
-        Motor4.accelerate()
-    else:
-        center()
+        if flag_acc == False:
+            sleep(0.2)
+            Motor1.accelerate()
+            Motor2.stop()
+            Motor3.accelerate()
+            Motor4.accelerate()
+            flag_acc = True
+            flag_rev = False
+    #else:
+    #    center()
 
-    if (
+    elif (
         ((S1 == 0) and (S2 == 0) and (S3 == 0) and (S4 == 1) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 0) and (S3 == 0) and (S4 == 1) and (S5 == 1)) or 
         ((S1 == 0) and (S2 == 0) and (S3 == 1) and (S4 == 1) and (S5 == 0)) or 
@@ -130,25 +138,34 @@ while flag:
         turn_left()
         sleep(0.2)
         Motor1.stop()
-        Motor2.accelerate()
-        Motor3.accelerate()
-        Motor4.accelerate()
-    else:
-        center()
+        if flag_acc == False:
+            Motor2.accelerate()
+            Motor3.accelerate()
+            Motor4.accelerate()
+            flag_acc = True
+            flag_rev = False
+    #else:
+    #    center()
 
-    if (
+    elif (
         ((S1 == 0) and (S2 == 0) and (S3 == 0) and (S4 == 0) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 0) and (S3 == 0) and (S4 == 0) and (S5 == 1)) or 
         ((S1 == 0) and (S2 == 0) and (S3 == 1) and (S4 == 0) and (S5 == 0)) or 
         ((S1 == 0) and (S2 == 0) and (S3 == 1) and (S4 == 0) and (S5 == 1))
     ):  
-        center()
-        sleep(0.2)
-        print('a')
-        Motor1.reverse()
-        Motor2.reverse()
-        Motor3.reverse()
-        Motor4.reverse()
+        if flag_rev == False:
+            MotorPins.debug()
+            center()
+            sleep(0.2)
+            print('a')
+            Motor1.reverse()
+            Motor2.reverse()
+            Motor3.reverse()
+            Motor4.reverse()
+            flag_rev = True
+            flag_acc = False
+
+            
     debug_time = ticks_diff(ticks_ms(), debug_timer1)
     debug_list.append((debug_time/1000))
     startTime = ticks_ms()
