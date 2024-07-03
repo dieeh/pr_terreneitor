@@ -1,29 +1,36 @@
 from machine import Pin, PWM
 from time import sleep
-from register import ShiftRegister
 
+def p_to_duty(percentage: int):  # -> Any:
+    return round((1023 * percentage) / 100)
 
 class DCMotor:
 
-    def __init__(self, shift_register, pin_forward, pin_backward):  # -> Any:
-        self.pin_forward = pin_forward
-        self.pin_backward = pin_backward
-        self.shift_register = shift_register
+    def __init__(self, pin_pwm, pin_forward, pin_backward, freq=1000):  # -> Any:
+        self.pin_forward = Pin(pin_forward, Pin.OUT)
+        self.pin_backward = Pin(pin_backward, Pin.OUT)
+        self.freq = freq
+        self.pin_pwm = Pin(pin_pwm, Pin.OUT)
+        self.pwm = PWM(pin_pwm, freq=self.freq)
 
-    def accelerate(self):  # -> Any:
-        self.shift_register.setOutput(self.pin_forward, True)
-        self.shift_register.setOutput(self.pin_backward, False)
-        self.shift_register.latch()
+    def accelerate(self, percentage):
+        self.pwm.duty(p_to_duty(percentage))
+    
+    def forward(self):  # -> Any:
+        self.pin_forward.on()
+        self.pin_backward.off()
 
-    def reverse(self):  # -> Any:
-        self.shift_register.setOutput(self.pin_forward, False)
-        self.shift_register.setOutput(self.pin_backward, True)
-        self.shift_register.latch()
+    def backward(self):  # -> Any:
+        self.pin_forward.off()
+        self.pin_backward.on()
 
     def stop(self):  # -> Any:
-        self.shift_register.setOutput(self.pin_forward, False)
-        self.shift_register.setOutput(self.pin_backward, False)
-        self.shift_register.latch()
+        self.pin_forward.off()
+        self.pin_backward.off()
+        self.pwm.duty(0)
+
+    def debug(self):
+        return [self.pin_forward.value(), self.pin_backward.value()]
 
 
 class ServoMotor:
