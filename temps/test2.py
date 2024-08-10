@@ -6,7 +6,7 @@ def p_to_duty(percentage: int):  # -> Any:
     return round((1023 * percentage) / 100)
 
 
-x = Pin(15, Pin.OUT)
+x = Pin(21, Pin.OUT)
 
 k = PWM(x, freq=50)  ##RANGO DUTY 17 - 134
 
@@ -80,6 +80,7 @@ def girar(angulo, serv):
     sleep(0.5)
 
 for i in range(5):
+    print(i)
     girar(35, k)
     sleep(1)
     girar(90, k)
@@ -88,3 +89,25 @@ for i in range(5):
     sleep(1)
     girar(90, k)
     sleep(1)
+
+#print('90')
+#girar(90, k)
+#sleep(1)
+#print('50')
+#girar(50, k)
+#sleep(1)
+#print('45')
+#girar(45, k)
+#sleep(1)
+#print('40')
+#girar(40, k)
+#sleep(1)
+#print('35')
+#girar(35, k)
+#sleep(1)
+#print('30')
+#girar(30, k)
+#sleep(1)
+#print('90')
+#girar(90, k)
+#sleep(1)

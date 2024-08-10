@@ -1,9 +1,9 @@
 from machine import Pin, freq
 from time import sleep, ticks_ms, ticks_diff
 from motor import DCMotor, ServoMotor
-from register import ShiftRegister
+#from register import ShiftRegister
 
-freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
+freq(240000000) # Boost CPU frequency to 160MHz -> Better performance
 
 ### pin assignments
 
@@ -28,15 +28,15 @@ freq(160000000) # Boost CPU frequency to 160MHz -> Better performance
 # Qg -> I6 -> DCMotor4_Forward
 # Qh -> I7 -> DCMotor4_Backward
 
-MotorPins = ShiftRegister(0, 2, 13)  ## Init Register
-MotorPins.setOutputs([0,0,0,0,0,0,0,0])  
-MotorPins.latch()
+#MotorPins = ShiftRegister(0, 2, 13)  ## Init Register
+#MotorPins.setOutputs([0,0,0,0,0,0,0,0])  
+#MotorPins.latch()
 
-Motor1 = DCMotor(MotorPins, 0, 1)  ## Arrangement of motors
-Motor2 = DCMotor(MotorPins, 2, 3)  ## --front--
-Motor3 = DCMotor(MotorPins, 4, 5)  ## M1 - M2
-Motor4 = DCMotor(MotorPins, 6, 7)  ## M3 - M4
-Servo = ServoMotor(15)
+Motor1 = DCMotor(22, 33, 25)  ## Arrangement of motors
+Motor2 = DCMotor(23, 26, 27)  ## --front--
+Motor3 = DCMotor(13, 19, 18)  ## M1 - M2
+Motor4 = DCMotor(4, 16, 17)    ## M3 - M4
+Servo = ServoMotor(21)
 
 
 def turn_right(inv=False):
@@ -67,106 +67,95 @@ def center():
     Servo.movement(90)
 
 
-SensorIn_1 = Pin(16, Pin.IN, value=0)
-SensorIn_2 = Pin(5, Pin.IN, value=0)  ## Arrangement of sensors
-SensorIn_3 = Pin(4, Pin.IN, value=0)  ## -- front --
-SensorIn_4 = Pin(14, Pin.IN, value=0)  ## 1,2,3,4,5
-SensorIn_5 = Pin(12, Pin.IN, value=0)  ## values: 0 for black, 1 for white
+SensorIn_1 = Pin(36, Pin.IN, value=0)
+SensorIn_2 = Pin(39, Pin.IN, value=0)  ## Arrangement of sensors
+SensorIn_3 = Pin(34, Pin.IN, value=0)  ## -- front --
+SensorIn_4 = Pin(35, Pin.IN, value=0)  ## 1,2,3,4,5
+SensorIn_5 = Pin(32, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 
 debug_list = []
-flag = True
-while flag:
+duty_percent = 90
+flag_main = True
+while flag_main:
     debug_timer1 = ticks_ms()
     if (
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
+        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1)) or 
         ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))
+        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_4.value() == 0)) or 
+        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1))
     ):
-        Motor1.accelerate()
-        Motor2.accelerate()
-        Motor3.accelerate()
-        Motor4.accelerate()
+        Motor1.forward()
+        Motor2.forward()
+        Motor3.forward()
+        Motor4.forward()
+        Motor1.accelerate(duty_percent)
+        Motor2.accelerate(duty_percent)
+        Motor3.accelerate(duty_percent)
+        Motor4.accelerate(duty_percent)
+        sleep(0.2)
 
     if (
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
+        ((SensorIn_2.value() == 1) and (SensorIn_4.value() == 0)) or 
         ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0))
     ):
         turn_right()
+        Motor1.accelerate(duty_percent)
+        Motor2.accelerate(0)
+        Motor3.accelerate(duty_percent)
+        Motor4.accelerate(0)
         sleep(0.2)
-        Motor1.accelerate()
-        Motor2.stop()
-        Motor3.accelerate()
-        Motor4.accelerate()
+
     else:
         center()
 
     if (
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))
+        ((SensorIn_2.value() == 0) and (SensorIn_4.value() == 1)) or 
+        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))
     ):
         turn_left()
+        Motor1.accelerate(0)
+        Motor2.accelerate(duty_percent)
+        Motor3.accelerate(0)
+        Motor4.accelerate(duty_percent)
         sleep(0.2)
-        Motor1.stop()
-        Motor2.accelerate()
-        Motor3.accelerate()
-        Motor4.accelerate()
     else:
         center()
 
     if (
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 0) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 0)) or 
-        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 0) and (SensorIn_5.value() == 1))
+        ((SensorIn_1.value() == 0) and (SensorIn_2.value() == 0) and (SensorIn_4.value() == 0)) or
+        ((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))
     ):  
         center()
+        Motor1.backward() 
+        Motor2.backward()
+        Motor3.backward()
+        Motor4.backward()
+        Motor1.accelerate(duty_percent)
+        Motor2.accelerate(duty_percent)
+        Motor3.accelerate(duty_percent)
+        Motor4.accelerate(duty_percent)
         sleep(0.2)
-        print("a")
-        Motor1.reverse()
-        Motor2.reverse()
-        Motor3.reverse()
-        Motor4.reverse()
 
-    debug_time = ticks_diff(ticks_ms(), debug_timer1)
-    debug_list.append((debug_time/1000))
-    startTime = ticks_ms()
-    while(((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))):
-        if (ticks_diff(ticks_ms(), startTime)/1000 > 3):
-            Motor1.stop()
-            Motor2.stop()
-            Motor3.stop()
-            Motor4.stop()    
-            turn_left()
-            turn_right()
-            turn_left()
-            turn_right()
-            flag = False
-            break
+    #debug_time = ticks_diff(ticks_ms(), debug_timer1)
+    #debug_list.append((debug_time/1000))
+    #startTime = ticks_ms()
+    #while(((SensorIn_1.value() == 1) and (SensorIn_2.value() == 1) and (SensorIn_3.value() == 1) and (SensorIn_4.value() == 1) and (SensorIn_5.value() == 1))):
+    #    if (ticks_diff(ticks_ms(), startTime)/1000 > 3):
+    #        Motor1.stop()
+    #        Motor2.stop()
+    #        Motor3.stop()
+    #        Motor4.stop()    
+    #        turn_left()
+    #        turn_right()
+    #        turn_left()
+    #        turn_right()
+    #        flag_main = False
+    #        break
 
 
 #Exit protocol
-freq(80000000)
+freq(160000000)
 center()
-MotorPins.setOutputs([0,0,0,0,0,0,0,0])
-MotorPins.latch()
+#MotorPins.setOutputs([0,0,0,0,0,0,0,0])
+#MotorPins.latch()
 print(debug_list)

@@ -3,7 +3,7 @@ from time import sleep, ticks_ms, ticks_diff
 from motor import DCMotor, ServoMotor
 
 
-print('1')
+print('start')
 freq(240000000) # Boost CPU frequency to 160MHz -> Better performance
 ### pin assignments
 
@@ -13,12 +13,12 @@ freq(240000000) # Boost CPU frequency to 160MHz -> Better performance
 # GPIO2   -- Not used
 # GPIO3   -- Not used
 # GPIO4   -> DCMotor4_Speed    -> PWM OUTPUT
-# GPIO5   -> DCMotor4_Forward  -> OUTPUT
+# GPIO5   -- Not used
 # GPIO12  -- Not used
 # GPIO13  -> DCMotor3_Speed    -> PWM OUTPUT
 # GPIO14  -- Not used
 # GPIO15  -- Not used
-# GPIO16  -- Not used
+# GPIO16  -> DCMotor4_Forward  -> OUTPUT-- Not used
 # GPIO17  -> DCMotor4_Backward -> OUTPUT
 # GPIO18  -> DCMotor3_Backward -> OUTPUT
 # GPIO19  -> DCMotor3_Forward  -> OUTPUT
@@ -37,10 +37,10 @@ freq(240000000) # Boost CPU frequency to 160MHz -> Better performance
 
 
 
-Motor1 = DCMotor(22, 33, 25)  ## Arrangement of motors
-Motor2 = DCMotor(23, 26, 27)  ## --front--
-Motor3 = DCMotor(13, 19, 18)  ## M1 - M2
-Motor4 = DCMotor(4, 5, 17)    ## M3 - M4
+Motor1 = DCMotor(22, 33, 25, 2000)  ## Arrangement of motors
+Motor2 = DCMotor(23, 26, 27, 2000)  ## --front--
+Motor3 = DCMotor(13, 19, 18, 2000)  ## M1 - M2
+Motor4 = DCMotor(4, 16, 17, 2000)    ## M3 - M4
 Servo = ServoMotor(21)
 
 print('2')
@@ -79,12 +79,8 @@ SensorIn_4 = Pin(35, Pin.IN, value=0)  ## 1,2,3,4,5
 SensorIn_5 = Pin(32, Pin.IN, value=0)  ## values: 0 for black, 1 for white
 print('3')
 debug_list = []
-duty_percent = 70
+duty_percent = 77
 flag_main = True
-flag_acc = False
-flag_rev = False
-flag_right = False
-flag_left = False
 while flag_main:
     debug_timer1 = ticks_ms()
     S1, S2, S3, S4, S5 = SensorIn_1.value(), SensorIn_2.value(), SensorIn_3.value(), SensorIn_4.value(), SensorIn_5.value()
@@ -100,22 +96,14 @@ while flag_main:
         ((S1 == 1) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 0)) or 
         ((S1 == 1) and (S2 == 1) and (S3 == 0) and (S4 == 1) and (S5 == 1))
     ):
-        if flag_acc == False:
-            Motor1.stop()
-            Motor2.backward()
-            Motor3.forward()
-            Motor4.backward()
-            flag_acc = True
-            flag_rev = False
+        Motor1.forward()
+        Motor2.forward()
+        Motor3.forward()
+        Motor4.forward()
         Motor1.accelerate(duty_percent)
         Motor2.accelerate(duty_percent)
         Motor3.accelerate(duty_percent)
         Motor4.accelerate(duty_percent)
-        print('s')
-        print(Motor1.debug())
-        print(Motor2.debug())
-        print(Motor3.debug())
-        print(Motor4.debug())
         sleep(0.2)
     elif (
         ((S1 == 0) and (S2 == 1) and (S3 == 0) and (S4 == 0) and (S5 == 0)) or 
@@ -171,24 +159,21 @@ while flag_main:
     ):  
         center()
         sleep(0.2)
-        if flag_rev == False:
-            print('a')
-            Motor1.backward() 
-            Motor2.forward()
-            Motor3.backward()
-            Motor4.forward()
-            flag_rev = True
-            flag_acc = False
+        Motor1.forward() 
+        Motor2.forward()
+        Motor3.forward()
+        Motor4.forward()
         Motor1.accelerate(duty_percent)
         Motor2.accelerate(duty_percent)
         Motor3.accelerate(duty_percent)
         Motor4.accelerate(duty_percent)
-        print('r')
-        print(Motor1.debug())
-        print(Motor2.debug())
-        print(Motor3.debug())
-        print(Motor4.debug())
         sleep(0.2)
+    elif (((S1 == 1) and (S2 == 1) and (S3 == 1) and (S4 == 1) and (S5 == 1))):
+        Motor1.backward()
+        Motor2.backward()
+        Motor3.backward()
+        Motor4.backward()
+        sleep(.2)
 
             
     debug_time = ticks_diff(ticks_ms(), debug_timer1)
